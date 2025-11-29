@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ev Yapımı Boşnak Böreği - İspanaklı, Patatesli, Peynirli</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-cookie-bite"></i>
+                <span>Ev Yapımı Boşnak Böreği</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#anasayfa" class="nav-link">Ana Sayfa</a>
+                <a href="#hakkimizda" class="nav-link">Hakkımızda</a>
+                <a href="#siparis" class="nav-link">Sipariş Ver</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="anasayfa" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1 class="hero-title">Ev Yapımı Taze Boşnak Böreği</h1>
+            <p class="hero-subtitle">İspanaklı, Patatesli ve Peynirli - Her gün taze, doğal malzemelerle özenle hazırlanan böreklerimiz</p>
+            <a href="#siparis" class="btn btn-primary btn-lg">Hemen Sipariş Ver</a>
+        </div>
+    </section>
+
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages-container">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            <i class="fas fa-check-circle"></i>
+            {{ message }}
+            <button class="close-btn" onclick="this.parentElement.remove()">×</button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Varieties Section -->
+    <section class="varieties">
+        <div class="container">
+            <h2 class="section-title">Boşnak Böreği Çeşitlerimiz</h2>
+            <p class="section-subtitle">Üç farklı lezzet, aynı özen</p>
+            <div class="varieties-grid">
+                <div class="variety-card">
+                    <div class="variety-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>İspanaklı Boşnak Böreği</h3>
+                    <p>Taze ıspanak ve baharatlarla hazırlanan, sağlıklı ve lezzetli</p>
+                </div>
+                <div class="variety-card">
+                    <div class="variety-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Patatesli Boşnak Böreği</h3>
+                    <p>Ezilmiş patates ve özel baharatlarla doyurucu bir lezzet</p>
+                </div>
+                <div class="variety-card">
+                    <div class="variety-icon">
+                        <i class="fas fa-cheese"></i>
+                    </div>
+                    <h3>Peynirli Boşnak Böreği</h3>
+                    <p>Taze peynir ve maydanozla klasik bir Boşnak böreği tarifi</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-leaf feature-icon"></i>
+                    <h3>Doğal Malzemeler</h3>
+                    <p>Sadece doğal ve taze malzemeler kullanıyoruz</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-home feature-icon"></i>
+                    <h3>Ev Yapımı</h3>
+                    <p>Her börek evimizde özenle hazırlanıyor</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-truck feature-icon"></i>
+                    <h3>Hızlı Teslimat</h3>
+                    <p>Aynı gün içinde adresinize teslim</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-money-bill-wave feature-icon"></i>
+                    <h3>Kapıda Nakit Ödeme</h3>
+                    <p>Ev bütçemize katkıda bulunmak için yapıyoruz, ödeme kapıda nakit olarak alınmaktadır</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Highlight Section -->
+    <section id="urunumuz" class="product-highlight">
+        <div class="container">
+            {% for borek in borekler %}
+            <div class="highlight-content">
+                <div class="highlight-image">
+                    {% if borek.resim %}
+                    <img src="{{ borek.resim.url }}" alt="{{ borek.ad }}">
+                    {% else %}
+                    <div class="image-placeholder">
+                        <i class="fas fa-cookie-bite"></i>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="highlight-info">
+                    <h2 class="section-title">{{ borek.ad }}</h2>
+                    <p class="highlight-description">{{ borek.aciklama }}</p>
+                    <div class="highlight-price">
+                        <span class="price-label">Fiyat:</span>
+                        <span class="price-value">{{ borek.fiyat }} TL</span>
+                    </div>
+                    <a href="#siparis" class="btn btn-primary btn-lg" onclick="selectBorek({{ borek.id }})">Sipariş Ver</a>
+                </div>
+            </div>
+            {% empty %}
+            <p class="no-products">Şu anda ürün bulunmamaktadır.</p>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="hakkimizda" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">Hakkımızda</h2>
+                    <p>Merhaba! Biz evde, özenle ve sevgiyle Boşnak böreği yapan bir aileyiz. Her gün taze malzemelerle, geleneksel Boşnak böreği tariflerimizi kullanarak en lezzetli börekleri hazırlıyoruz.</p>
+                    <p>Boşnak böreğinin ince hamuru ve özel kıvırma tekniğiyle, size ev yemeğinin sıcaklığını ve lezzetini yaşatmak için üç farklı çeşit sunuyoruz: İspanaklı, Patatesli ve Peynirli. Her börek, annemizden öğrendiğimiz tariflerle, en kaliteli malzemelerden yapılıyor.</p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <i class="fas fa-users"></i>
+                            <h3>500+</h3>
+                            <p>Mutlu Müşteri</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-cookie"></i>
+                            <h3>1000+</h3>
+                            <p>Börek Teslim Edildi</p>
+                        </div>
+                        <div class="stat">
+                            <i class="fas fa-star"></i>
+                            <h3>5.0</h3>
+                            <p>Müşteri Memnuniyeti</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Section -->
+    <section id="siparis" class="order-section">
+        <div class="container">
+            <h2 class="section-title">Sipariş Ver</h2>
+            <p class="section-subtitle">Formu doldurun, size ulaşalım</p>
+            
+            <div class="payment-info">
+                <i class="fas fa-info-circle"></i>
+                <p><strong>Ödeme:</strong> Ev bütçemize katkıda bulunmak amacıyla yapıyoruz. Ödeme, börekleriniz teslim edilirken kapıda nakit olarak alınmaktadır.</p>
+            </div>
+            
+            <div class="form-container">
+                <form method="post" action="{% url 'siparis_olustur' %}" class="order-form">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Telefon Numarası *</label>
+                        {{ siparis_form.telefon }}
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-cookie-bite"></i> Börek Çeşidi *</label>
+                            {{ siparis_form.borek }}
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-shopping-cart"></i> Adet *</label>
+                            {{ siparis_form.adet }}
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-map-marker-alt"></i> Teslimat Adresi *</label>
+                        {{ siparis_form.adres }}
+                    </div>
+                    
+                    <div class="form-group">
+                        <label><i class="fas fa-comment"></i> Sipariş Notu (Opsiyonel)</label>
+                        {{ siparis_form.not_mesaj }}
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-paper-plane"></i> Sipariş Gönder
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3><i class="fas fa-cookie-bite"></i> Ev Yapımı Boşnak Böreği</h3>
+                    <p>Taze, doğal ve sevgiyle hazırlanan Boşnak börekleri</p>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/borekciteyzeler" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="https://wa.me/905070175243?text=Merhaba, börek siparişi vermek istiyorum" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Hızlı Linkler</h4>
+                    <ul>
+                        <li><a href="#anasayfa">Ana Sayfa</a></li>
+                        <li><a href="#hakkimizda">Hakkımızda</a></li>
+                        <li><a href="#siparis">Sipariş Ver</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>İletişim</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> <a href="tel:+905321234567" style="color: white; text-decoration: none;">0507 017 52 43</a></li>
+                        <li><i class="fab fa-instagram"></i> @borekciteyzeler</li>
+                        <li><i class="fas fa-clock"></i> Hafta içi 08:00-20:00</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Ev Yapımı Boşnak Böreği. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/905070175243?text=Merhaba, bir sorum olacaktı" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+    
+    <!-- Mobile Floating Action Button -->
+    <a href="#siparis" class="mobile-fab">
+        <i class="fas fa-shopping-cart"></i>
+        <span>Sipariş Ver</span>
+    </a>
+</body>
+</html>
