@@ -3,6 +3,8 @@ from django.contrib import messages
 from .models import BorekCesidi, Siparis, Iletisim
 from .forms import SiparisForm, IletisimForm
 from .notifications import send_order_notifications
+from datetime import datetime
+import pytz
 
 
 def ana_sayfa(request):
@@ -11,10 +13,20 @@ def ana_sayfa(request):
     siparis_form = SiparisForm()
     iletisim_form = IletisimForm()
     
+    # Çalışma saati kontrolü (08:00 - 18:00)
+    istanbul_tz = pytz.timezone('Europe/Istanbul')
+    now = datetime.now(istanbul_tz)
+    current_hour = now.hour
+    
+    # Sipariş saatleri: 08:00 - 18:00 arası
+    is_open = 8 <= current_hour < 20
+    
     context = {
         'borekler': borekler,
         'siparis_form': siparis_form,
         'iletisim_form': iletisim_form,
+        'is_open': is_open,
+        'current_time': now.strftime('%H:%M'),
     }
     return render(request, 'ana_sayfa/index.html', context)
 
@@ -22,6 +34,15 @@ def ana_sayfa(request):
 def siparis_olustur(request):
     """Sipariş oluşturma"""
     if request.method == 'POST':
+        # Çalışma saati kontrolü
+        istanbul_tz = pytz.timezone('Europe/Istanbul')
+        now = datetime.now(istanbul_tz)
+        current_hour = now.hour
+        
+        if not (8 <= current_hour < 18):
+            messages.error(request, '⏰ Sipariş saatlerimiz 08:00 - 18:00 arasındadır. Lütfen çalışma saatlerimiz içinde tekrar deneyin.')
+            return redirect('ana_sayfa')
+        
         form = SiparisForm(request.POST)
         if form.is_valid():
             siparis = form.save(commit=False)
