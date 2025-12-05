@@ -105,7 +105,7 @@ html {
     justify-content: center;
     text-align: center;
     color: white;
-    background-image: url('../img/ıspanaklı.png');
+    background-image: url('../img/ıspanaklı.png?v=3');
     background-size: cover;
     background-position: center;
 }
