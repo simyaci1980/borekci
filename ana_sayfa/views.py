@@ -13,13 +13,13 @@ def ana_sayfa(request):
     siparis_form = SiparisForm()
     iletisim_form = IletisimForm()
     
-    # Çalışma saati kontrolü (08:00 - 18:00)
+    # Çalışma saati kontrolü (08:00 - 23:00)
     istanbul_tz = pytz.timezone('Europe/Istanbul')
     now = datetime.now(istanbul_tz)
     current_hour = now.hour
     
-    # Sipariş saatleri: 08:00 - 18:00 arası
-    is_open = 8 <= current_hour < 20
+    # Sipariş saatleri: 08:00 - 23:00 arası
+    is_open = 8 <= current_hour < 23
     
     context = {
         'borekler': borekler,
@@ -39,8 +39,8 @@ def siparis_olustur(request):
         now = datetime.now(istanbul_tz)
         current_hour = now.hour
         
-        if not (8 <= current_hour < 18):
-            messages.error(request, '⏰ Sipariş saatlerimiz 08:00 - 18:00 arasındadır. Lütfen çalışma saatlerimiz içinde tekrar deneyin.')
+        if not (8 <= current_hour < 23):
+            messages.error(request, '⏰ Sipariş saatlerimiz 08:00 - 23:00 arasındadır. Lütfen çalışma saatlerimiz içinde tekrar deneyin.')
             return redirect('ana_sayfa')
         
         form = SiparisForm(request.POST)
