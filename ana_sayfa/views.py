@@ -11,6 +11,10 @@ def ana_sayfa(request):
     """Ana sayfa - Tek sayfalık börek satış sitesi"""
     borekler = BorekCesidi.objects.filter(aktif=True)
     siparis_form = SiparisForm()
+    
+    # Börek seçimi için boş seçenek ekle
+    siparis_form.fields['borek'].empty_label = "🥟 Lezzet seçiniz..."
+    
     iletisim_form = IletisimForm()
     
     # Çalışma saati kontrolü (08:00 - 23:00)
